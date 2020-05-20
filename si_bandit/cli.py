@@ -98,7 +98,7 @@ def si_bandit(
         print(f.name)
         subprocess.run(["bandit", "-r", "-f", "json", "-o", f.name, from_directory])
         with open(f.name, "r") as json_file:
-            bandit_output = json.loads(json_file.read())
+            bandit_output = json.load(json_file)
 
     out = dict()
     out["bandit_version"] = bandit_version
