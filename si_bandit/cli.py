@@ -43,7 +43,7 @@ init_logging()
     help="Output file to print results to.",
 )
 @click.option(
-    "--directory",
+    "--from-directory",
     "-d",
     type=str,
     envvar="SI_BANDIT_DIR",
@@ -66,39 +66,37 @@ init_logging()
 @click.option(
     "--package-index",
     type=str,
+    default="https://pypi.org/simple",
     envvar="SI_BANDIT_PACKAGE_INDEX",
     help="Which index is used to find package.",
 )
 def si_bandit(
     output: Optional[str],
-    directory: Optional[str],
+    from_directory: Optional[str],
     package_name: str,
     package_version: Optional[str],
     package_index: Optional[str],
 ):
     """Run the cli for si-bandit."""
-    if directory is None:
+    if from_directory is None:
         d = tempfile.TemporaryDirectory()
-        command = ["pip", "download", "--no-binary=:all:", "--no-deps", "-d", d.name]
+        command = ["pip", "download", "--no-binary=:all:", "--no-deps", "-d", d.name, "-i", package_index]
         if package_version is not None:
             command.append(f"{package_name}=={package_version}")
         else:
             command.append(package_name)
-        if package_index is not None:
-            command.append("-i")
-            command.append(package_index)
         subprocess.run(command)
         for f in os.listdir(d.name):
             if f.endswith(".tar.gz"):
                 full_path = os.path.join(d.name, f)
                 tar = tarfile.open(full_path, "r:gz")
                 tar.extractall(os.path.join(d.name, "package"))
-                directory = os.path.join(d.name, "package")
+                from_directory = os.path.join(d.name, "package")
                 break
 
     with tempfile.NamedTemporaryFile() as f:
         print(f.name)
-        subprocess.run(["bandit", "-r", "-f", "json", "-o", f.name, directory])
+        subprocess.run(["bandit", "-r", "-f", "json", "-o", f.name, from_directory])
         with open(f.name, "r") as json_file:
             bandit_output = json.loads(json_file.read())
 
@@ -113,10 +111,7 @@ def si_bandit(
     else:
         out["package_version"] = package_version
 
-    if package_index is None:
-        out["package_index"] = "https://pypi.org/simple"
-    else:
-        out["package_index"] = package_index
+    out["package_index"] = package_index
 
     out["bandit_output"] = bandit_output
     if output is not None:
