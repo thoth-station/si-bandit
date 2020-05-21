@@ -16,7 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """This is the main script of the template project."""
-from si_bandit.version import __version__ as si_bandit_version
+from version import __version__ as si_bandit_version
+from version import __title__ as si_bandit_title
 import os
 import subprocess
 import tempfile
@@ -24,29 +25,32 @@ import tarfile
 import click
 import json
 from typing import Optional
-from thoth.common import init_logging
 from bandit import __version__ as bandit_version
 from pprint import PrettyPrinter
 import datetime
 
-pp = PrettyPrinter(indent=4)
+from thoth.analyzer import run_command
+from thoth.analyzer import print_command_result
+from thoth.common import init_logging
 
 init_logging()
 
 
 @click.command()
+@click.pass_context
 @click.option(
     "--output",
     "-o",
     type=str,
-    envvar="SI_BANDIT_OUTPUT",
+    default="-",
+    envvar="THOTH_SI_BANDIT_OUTPUT",
     help="Output file to print results to.",
 )
 @click.option(
     "--from-directory",
     "-d",
     type=str,
-    envvar="SI_BANDIT_DIR",
+    envvar="THOTH_SI_BANDIT_DIR",
     help="Input directory for running bandit.",
 )
 @click.option(
@@ -54,38 +58,41 @@ init_logging()
     "-n",
     required=True,
     type=str,
-    envvar="SI_BANDIT_PACKAGE_NAME",
+    envvar="THOTH_SI_BANDIT_PACKAGE_NAME",
     help="Name of package bandit is being run on.",
 )
 @click.option(
     "--package-version",
     type=str,
-    envvar="SI_BANDIT_PACKAGE_VERSION",
+    required=True,
+    envvar="THOTH_SI_BANDIT_PACKAGE_VERSION",
     help="Version to be evaluated.",
 )
 @click.option(
     "--package-index",
     type=str,
     default="https://pypi.org/simple",
-    envvar="SI_BANDIT_PACKAGE_INDEX",
+    envvar="THOTH_SI_BANDIT_PACKAGE_INDEX",
     help="Which index is used to find package.",
 )
+@click.option("--no-pretty", is_flag=True, help="Do not print results nicely.")
 def si_bandit(
+    click_ctx,
     output: Optional[str],
     from_directory: Optional[str],
     package_name: str,
     package_version: Optional[str],
     package_index: Optional[str],
+    no_pretty: bool,
 ):
     """Run the cli for si-bandit."""
     if from_directory is None:
         d = tempfile.TemporaryDirectory()
-        command = ["pip", "download", "--no-binary=:all:", "--no-deps", "-d", d.name, "-i", package_index]
-        if package_version is not None:
-            command.append(f"{package_name}=={package_version}")
-        else:
-            command.append(package_name)
-        subprocess.run(command)
+        command = (
+            f"pip download --no-binary=:all: --no-deps -d {d.name} -i {package_index} "
+            + f"{package_name}=={package_version}"""
+        )
+        run_command(command)
         for f in os.listdir(d.name):
             if f.endswith(".tar.gz"):
                 full_path = os.path.join(d.name, f)
@@ -94,31 +101,21 @@ def si_bandit(
                 from_directory = os.path.join(d.name, "package")
                 break
 
-    with tempfile.NamedTemporaryFile() as f:
-        print(f.name)
-        subprocess.run(["bandit", "-r", "-f", "json", "-o", f.name, from_directory])
-        with open(f.name, "r") as json_file:
-            bandit_output = json.load(json_file)
-
-    out = dict()
-    out["bandit_version"] = bandit_version
-    out["si_bandit_version"] = si_bandit_version
+    out = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,).stdout
     out["package_name"] = package_name
-    out["time_stamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    if package_version is None:
-        out["package_version"] = "latest"
-    else:
-        out["package_version"] = package_version
-
+    out["package_version"] = package_version
+    out["bandit_version"] = bandit_version
     out["package_index"] = package_index
 
-    out["bandit_output"] = bandit_output
-    if output is not None:
-        with open(output, 'w') as f:
-            json.dump(out, f,)
-    else:
-        pp.pprint(out)
+    print_command_result(
+        click_ctx=click_ctx,
+        result=out,
+        analyzer=si_bandit_title,
+        analyzer_version=si_bandit_version,
+        output=output,
+        duration=None,
+        pretty=not no_pretty,
+    )
 
 
 __name__ == "__main__" and si_bandit()

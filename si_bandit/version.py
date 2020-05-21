@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""This file carries the version of the si-bandit project."""
+"""This file carries the version and title of the si-bandit project."""
 
+__title__ = "thoth-si-bandit"
 __version__ = "0.1.0"

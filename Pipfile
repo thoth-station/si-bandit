@@ -9,6 +9,7 @@ verify_ssl = true
 bandit = "*"
 click = "*"
 thoth-common = "*"
+thoth-analyzer = "*"
 
 [requires]
 python_version = "3.6"
