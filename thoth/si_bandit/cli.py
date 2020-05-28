@@ -90,7 +90,7 @@ def si_bandit(
         d = tempfile.TemporaryDirectory()
         command = (
             f"pip download --no-binary=:all: --no-deps -d {d.name} -i {package_index} "
-            + f"{package_name}=={package_version}"""
+            f"{package_name}==={package_version}"
         )
         run_command(command)
         for f in os.listdir(d.name):
@@ -100,8 +100,14 @@ def si_bandit(
                 tar.extractall(os.path.join(d.name, "package"))
                 from_directory = os.path.join(d.name, "package")
                 break
+        else:
+            raise FileNotFoundError(f"No source distribution found for {package_name}==={package_version} "
+                                    f"on {package_index}")
 
-    out = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,).stdout
+    results = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,)
+    out = results.stdout
+    if out is None:
+        raise Exception(results.stderr)
     out["package_name"] = package_name
     out["package_version"] = package_version
     out["bandit_version"] = bandit_version
