@@ -25,6 +25,8 @@ import tarfile
 import click
 import json
 from typing import Optional
+from typing import Dict
+from typing import Any
 from bandit import __version__ as bandit_version
 from pprint import PrettyPrinter
 import datetime
@@ -35,6 +37,13 @@ from thoth.common import init_logging
 
 init_logging()
 
+
+def _run_bandit(from_directory: str) -> Optional[Dict[str, Any]]:
+    results = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,)
+    out = results.stdout
+    if out is None:
+        raise Exception(results.stderr)
+    return out
 
 @click.command()
 @click.pass_context
@@ -87,21 +96,26 @@ def si_bandit(
 ):
     """Run the cli for si-bandit."""
     if from_directory is None:
-        d = tempfile.TemporaryDirectory()
-        command = (
-            f"pip download --no-binary=:all: --no-deps -d {d.name} -i {package_index} "
-            + f"{package_name}=={package_version}"""
-        )
-        run_command(command)
-        for f in os.listdir(d.name):
-            if f.endswith(".tar.gz"):
-                full_path = os.path.join(d.name, f)
-                tar = tarfile.open(full_path, "r:gz")
-                tar.extractall(os.path.join(d.name, "package"))
-                from_directory = os.path.join(d.name, "package")
-                break
+        with tempfile.TemporaryDirectory() as d:
+            command = (
+                f"pip download --no-binary=:all: --no-deps -d {d} -i {package_index} "
+                f"{package_name}==={package_version}"
+            )
+            run_command(command)
+            for f in os.listdir(d):
+                if f.endswith(".tar.gz"):
+                    full_path = os.path.join(d, f)
+                    tar = tarfile.open(full_path, "r:gz")
+                    tar.extractall(os.path.join(d, "package"))
+                    from_directory = os.path.join(d, "package")
+                    break
+            else:
+                raise FileNotFoundError(f"No source distribution found for {package_name}==={package_version} "
+                                        f"on {package_index}")
+            out = _run_bandit(from_directory)
+    else:
+        out = _run_bandit(from_directory)
 
-    out = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,).stdout
     out["package_name"] = package_name
     out["package_version"] = package_version
     out["bandit_version"] = bandit_version
