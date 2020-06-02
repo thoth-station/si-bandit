@@ -15,9 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""This is the main script of the template project."""
+"""This file carries the version and title of the si-bandit project."""
 
-from template.version import __version__
-
-if __name__ == "__main__":
-    print(f"A template project with Thoth integration, v{__version__}.")
+__title__ = "thoth-si-bandit"
+__version__ = "0.1.0"

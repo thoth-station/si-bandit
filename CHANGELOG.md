@@ -1,4 +1,4 @@
-# Changelog for Thoth's Template GitHub Project
+# Changelog for Bandit Security Indicator GitHub Project
 
 ## [0.1.0] - 2019-Sep-11 - goern
 
