@@ -1,12 +1,10 @@
 - project:
     check:
       jobs:
-        - "thoth-coala"
         - "thoth-pytest"
     gate:
       queue: "CHANGEME"
       jobs:
-        - "thoth-coala"
         - "thoth-pytest"
     post:
       jobs:
