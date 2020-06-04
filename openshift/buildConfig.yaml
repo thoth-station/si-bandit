@@ -45,6 +45,18 @@ parameters:
     name: THOTH_ADVISE
     value: "1"
 
+  - description: Thamos Provenance Check setup tag flag
+    displayName: THOTH_PROVENANCE_CHECK
+    required: true
+    name: THOTH_PROVENANCE_CHECK
+    value: "0"
+  
+  - description: Error fallback flag
+    displayName: THOTH_ERROR_FALLBACK
+    required: true
+    name: THOTH_ERROR_FALLBACK
+    value: "1"
+
 objects:
   - apiVersion: v1
     kind: BuildConfig
@@ -96,6 +108,10 @@ objects:
               value: ".thoth.yaml"
             - name: "THAMOS_CONFIG_EXPAND_ENV"
               value: "1"
+            - name: "THOTH_PROVENANCE_CHECK"
+              value: ${THOTH_PROVENANCE_CHECK}
+            - name: "THOTH_ERROR_FALLBACK"
+              value: ${THOTH_ERROR_FALLBACK}
       triggers:
         - imageChange: {}
           type: ImageChange
