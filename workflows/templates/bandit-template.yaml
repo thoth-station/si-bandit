@@ -4,7 +4,7 @@ kind: WorkflowTemplate
 metadata:
   name: bandit
   annotations:
-    thoth-station.ninja/template-version: 0.6.5
+    thoth-station.ninja/template-version: 0.1.0
   labels:
     app: thoth
     component: si-bandit
@@ -31,7 +31,7 @@ spec:
             s3:
               key: "{{inputs.parameters.THOTH_CEPH_BUCKET_PREFIX}}/\
               {{inputs.parameters.THOTH_DEPLOYMENT_NAME}}/\
-              adviser/{{inputs.parameters.THOTH_DOCUMENT_ID}}"
+              security-indicators/{{inputs.parameters.THOTH_DOCUMENT_ID}}"
               endpoint: "{{inputs.parameters.THOTH_S3_ENDPOINT_URL}}"
               bucket: "{{inputs.parameters.THOTH_CEPH_BUCKET_NAME}}"
               insecure: true

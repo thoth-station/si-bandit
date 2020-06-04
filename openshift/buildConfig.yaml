@@ -7,28 +7,28 @@ metadata:
       This is Thoth Bandit Security Indicator BuildConfig, this template is meant to be used by Bots, but could also be
       used by humans...
     openshift.io/display-name: "Thoth: si-bandit BuildConfig"
-    version: 0.4.2
+    version: 0.1.0
     tags: thoth,ai-stacks,si-bandit
     template.openshift.io/documentation-url: https://github.com/Thoth-Station
     template.openshift.io/long-description: >
       This is Thoth Bandit Security indicator BuildConfig, this template is meant to be
       used by Bots, but could also be used by humans...
     template.openshift.io/provider-display-name: "Red Hat, Inc."
-    thoth-station.ninja/template-version: 0.4.2
+    thoth-station.ninja/template-version: 0.1.0
   labels:
     template: si-bandit-buildconfig
     app: thoth
     component: si-bandit
 
 parameters:
-  - description: Git repository for Thoth's Adviser
-    displayName: Thoth Adviser git repository
+  - description: Git repository for Thoth's SI-Bandit
+    displayName: Thoth SI-Bandit git repository
     required: true
     name: GITHUB_URL
     value: "https://github.com/thoth-station/si-bandit"
 
   - description: Git repository for bandit security indicator
-    displayName: Thoth Adviser git reference
+    displayName: Thoth SI-Bandit git reference
     required: true
     name: GITHUB_REF
     value: "master"
@@ -65,7 +65,7 @@ objects:
         app: thoth
         component: si-bandit
       annotations:
-        thoth-station.ninja/template-version: 0.4.2
+        thoth-station.ninja/template-version: 0.1.0
       name: si-bandit
     spec:
       resources:

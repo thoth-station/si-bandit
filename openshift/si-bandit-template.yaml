@@ -1,20 +1,20 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: adviser
+  name: SI-Bandit
   annotations:
-    description: "Thoth: Adviser"
-    openshift.io/display-name: "Thoth: Adviser"
-    version: 0.6.4
-    tags: thoth,ai-stacks,adviser
+    description: "Thoth: SI-Bandit"
+    openshift.io/display-name: "Thoth: SI-Bandit"
+    version: 0.1.0
+    tags: thoth,ai-stacks,si-bandit
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This template defines resources needed to run recommendation logic of Thoth to OpenShift.
     template.openshift.io/provider-display-name: "Red Hat, Inc."
   labels:
     app: thoth
-    template: adviser
-    component: adviser
+    template: si-bandit
+    component: si-bandit
 
 parameters:
   - name: THOTH_SI_BANDIT_JOB_ID
@@ -41,16 +41,12 @@ objects:
     metadata:
       name: "${THOTH_SI_BANDIT_JOB_ID}"
       annotations:
-        thoth-station.ninja/template-version: 0.6.4
+        thoth-station.ninja/template-version: 0.1.0
       labels:
         app: thoth
         component: si-bandit
     spec:
       serviceAccountName: argo
-      ttlStrategy:
-        # Keep adviser 1h to let users browse the logs.
-        secondsAfterSuccess: 3600
-        # secondsAfterFailure kept unset to keep failed advisers
       entrypoint: si-bandit
       arguments:
         parameters:
