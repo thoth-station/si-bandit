@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: si-bandit
+  name: bandit
   annotations:
     thoth-station.ninja/template-version: 0.6.5
   labels:
@@ -10,7 +10,7 @@ metadata:
     component: si-bandit
 spec:
   templates:
-    - name: si-bandit
+    - name: bandit
       inputs:
         parameters:
           - name: "THOTH_SI_BANDIT_JOB_ID"
@@ -18,9 +18,6 @@ spec:
           - name: "THOTH_SI_BANDIT_PACKAGE_NAME"
           - name: "THOTH_SI_BANDIT_PACKAGE_VERSION"
           - name: "THOTH_SI_BANDIT_PACKAGE_INDEX"
-          - name: "IMAGE_STREAM_REGISTRY"
-          - name: "IMAGE_STREAM_NAMESPACE"
-          - name: "IMAGE_STREAM_TAG"
           - name: "THOTH_S3_ENDPOINT_URL"
           - name: "THOTH_CEPH_BUCKET_NAME"
           - name: "THOTH_CEPH_BUCKET_PREFIX"
@@ -46,9 +43,7 @@ spec:
                 key: secretKey
       container:
         name: si-bandit
-        image: "{{inputs.parameters.IMAGE_STREAM_REGISTRY}}/\
-        {{inputs.parameters.IMAGE_STREAM_NAMESPACE}}/\
-        si-bandit:{{inputs.parameters.IMAGE_STREAM_TAG}}"
+        image: "si-bandit"
         env:
           - name: THOTH_DOCUMENT_ID
             value: "{{inputs.parameters.THOTH_DOCUMENT_ID}}"
