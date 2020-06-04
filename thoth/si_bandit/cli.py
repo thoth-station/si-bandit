@@ -116,11 +116,6 @@ def si_bandit(
     else:
         out = _run_bandit(from_directory)
 
-    out["package_name"] = package_name
-    out["package_version"] = package_version
-    out["bandit_version"] = bandit_version
-    out["package_index"] = package_index
-
     print_command_result(
         click_ctx=click_ctx,
         result=out,
