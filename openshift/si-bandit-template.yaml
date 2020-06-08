@@ -1,7 +1,7 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  name: SI-Bandit
+  name: si-bandit
   annotations:
     description: "Thoth: SI-Bandit"
     openshift.io/display-name: "Thoth: SI-Bandit"
@@ -33,7 +33,6 @@ parameters:
     required: true
     description: Index to get package from.
     displayName: package Index
-    value: "https://pypi.org/simple"
 
 objects:
   - apiVersion: argoproj.io/v1alpha1
