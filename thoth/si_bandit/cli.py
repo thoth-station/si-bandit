@@ -116,6 +116,7 @@ def si_bandit(
     else:
         out = _run_bandit(from_directory)
 
+    out["security_indicator"] = "bandit"
     out["package_name"] = package_name
     out["package_version"] = package_version
     out["bandit_version"] = bandit_version
