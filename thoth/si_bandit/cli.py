@@ -19,48 +19,37 @@
 from version import __version__ as si_bandit_version
 from version import __title__ as si_bandit_title
 import os
-import subprocess
 import tempfile
 import tarfile
 import click
-import json
 from typing import Optional
 from typing import Dict
 from typing import Any
-from bandit import __version__ as bandit_version
-from pprint import PrettyPrinter
-import datetime
 
 from thoth.analyzer import run_command
 from thoth.analyzer import print_command_result
 from thoth.common import init_logging
 
+from thoth.pythom import Source
+
 init_logging()
 
 
 def _run_bandit(from_directory: str) -> Optional[Dict[str, Any]]:
-    results = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False,)
+    results = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False)
     out = results.stdout
     if out is None:
         raise Exception(results.stderr)
     return out
 
+
 @click.command()
 @click.pass_context
 @click.option(
-    "--output",
-    "-o",
-    type=str,
-    default="-",
-    envvar="THOTH_SI_BANDIT_OUTPUT",
-    help="Output file to print results to.",
+    "--output", "-o", type=str, default="-", envvar="THOTH_SI_BANDIT_OUTPUT", help="Output file to print results to."
 )
 @click.option(
-    "--from-directory",
-    "-d",
-    type=str,
-    envvar="THOTH_SI_BANDIT_DIR",
-    help="Input directory for running bandit.",
+    "--from-directory", "-d", type=str, envvar="THOTH_SI_BANDIT_DIR", help="Input directory for running bandit."
 )
 @click.option(
     "--package-name",
@@ -110,16 +99,25 @@ def si_bandit(
                     from_directory = os.path.join(d, "package")
                     break
             else:
-                raise FileNotFoundError(f"No source distribution found for {package_name}==={package_version} "
-                                        f"on {package_index}")
+                raise FileNotFoundError(
+                    f"No source distribution found for {package_name}==={package_version} " f"on {package_index}"
+                )
             out = _run_bandit(from_directory)
     else:
         out = _run_bandit(from_directory)
 
-    out["package_name"] = package_name
-    out["package_version"] = package_version
-    out["bandit_version"] = bandit_version
-    out["package_index"] = package_index
+    if out is None:
+        raise RuntimeError("output of bandit is empty")
+
+    source_dict = {"url": package_index, "name": "foo", "verify_ssl": False, "warehouse": True}
+    source = Source.from_dict(source_dict)
+
+    try:
+        out["time_of_release"] = source.get_package_release_date(
+            package_name=package_name, package_version=package_version
+        )
+    except Exception:
+        out["time_of_release"] = None
 
     print_command_result(
         click_ctx=click_ctx,
