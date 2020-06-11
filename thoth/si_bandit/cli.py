@@ -30,7 +30,7 @@ from thoth.analyzer import run_command
 from thoth.analyzer import print_command_result
 from thoth.common import init_logging
 
-from thoth.pythom import Source
+from thoth.python import Source
 
 init_logging()
 
