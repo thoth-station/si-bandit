@@ -1,0 +1,35 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: si-bandit-imagestream
+  annotations:
+    description: >
+      This is Thoth Bandit Security Indicator ImageStream, this template is meant to be used by Bots, but could also
+      be used by humans
+    openshift.io/display-name: "Thoth: SI-Bandit ImageStream"
+    version: 0.1.0
+    tags: thoth,ai-stacks,si-bandit
+    template.openshift.io/documentation-url: https://github.com/Thoth-Station
+    template.openshift.io/long-description: >
+      This is Thoth Bandit Secuirty Indicator ImageStream, this template is meant to be used by Bots, but could also
+      be used by humans...
+    template.openshift.io/provider-display-name: "Red Hat, Inc."
+    thoth-station.ninja/template-version: 0.1.0
+  labels:
+    app: thoth
+    component: si-bandit
+
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.1.0
+      labels:
+        app: thoth
+        component: si-bandit
+      name: si-bandit
+    spec:
+      name: latest
+      lookupPolicy:
+        local: true

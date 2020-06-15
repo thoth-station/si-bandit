@@ -16,5 +16,3 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """Creating document for bandit."""
-
-from .version import __version__
