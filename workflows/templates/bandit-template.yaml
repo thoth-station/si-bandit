@@ -74,29 +74,6 @@ spec:
           - name: "THOTH_SI_BANDIT_PACKAGE_VERSION"
           - name: "THOTH_SI_BANDIT_PACKAGE_INDEX"
           - name: "THOTH_SI_BANDIT_DIR"
-          - name: "THOTH_S3_ENDPOINT_URL"
-          - name: "THOTH_CEPH_BUCKET_NAME"
-          - name: "THOTH_CEPH_BUCKET_PREFIX"
-          - name: "THOTH_DEPLOYMENT_NAME"
-      outputs:
-        artifacts:
-          - name: outputdocument
-            path: "/mnt/workdir/bandit_results"
-            archive:
-              none: {}
-            s3:
-              key: "{{inputs.parameters.THOTH_CEPH_BUCKET_PREFIX}}/\
-              {{inputs.parameters.THOTH_DEPLOYMENT_NAME}}/\
-              security-indicators/{{inputs.parameters.THOTH_DOCUMENT_ID}}/si-bandit"
-              endpoint: "{{inputs.parameters.THOTH_S3_ENDPOINT_URL}}"
-              bucket: "{{inputs.parameters.THOTH_CEPH_BUCKET_NAME}}"
-              insecure: true
-              accessKeySecret:
-                name: argo-artifact-repository-secrets
-                key: accessKey
-              secretKeySecret:
-                name: argo-artifact-repository-secrets
-                key: secretKey
       container:
         name: si-bandit
         image: "si-bandit"
