@@ -100,3 +100,7 @@ spec:
           requests:
             cpu: 200m
             memory: 256Mi
+      outputs:
+        artifacts:
+          - name: bandit-results
+            path: /mnt/workdir/bandit_results
