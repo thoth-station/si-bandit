@@ -30,6 +30,8 @@ from thoth.analyzer import run_command
 from thoth.analyzer import print_command_result
 from thoth.common import init_logging
 
+from thoth.python import Source
+
 init_logging()
 
 
@@ -103,6 +105,19 @@ def si_bandit(
             out = _run_bandit(from_directory)
     else:
         out = _run_bandit(from_directory)
+
+    if out is None:
+        raise RuntimeError("output of bandit is empty")
+
+    source_dict = {"url": package_index, "name": "foo", "verify_ssl": False, "warehouse": True}
+    source = Source.from_dict(source_dict)
+
+    try:
+        out["time_of_release"] = source.get_package_release_date(
+            package_name=package_name, package_version=package_version
+        )
+    except Exception:
+        out["time_of_release"] = None
 
     print_command_result(
         click_ctx=click_ctx,
