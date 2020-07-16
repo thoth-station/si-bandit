@@ -18,4 +18,4 @@
 """This file carries the version and title of the si-bandit project."""
 
 __title__ = "thoth-si-bandit"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
