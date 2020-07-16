@@ -21,6 +21,7 @@ managers:
         - fridex
         - goern
         - harshad16
+        - kpostoffice
         - pacospace
       assignees:
         - sesheta
