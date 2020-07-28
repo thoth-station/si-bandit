@@ -16,8 +16,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """This is the main script of the template project."""
-from version import __version__ as si_bandit_version
-from version import __title__ as si_bandit_title
+from thoth.si_bandit.version import __version__ as si_bandit_version
+from thoth.si_bandit.version import __title__ as si_bandit_title
 import os
 import tempfile
 import tarfile
