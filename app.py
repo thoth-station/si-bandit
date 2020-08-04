@@ -40,6 +40,8 @@ def _run_bandit(from_directory: str) -> Optional[Dict[str, Any]]:
     out = results.stdout
     if out is None:
         raise Exception(results.stderr)
+    if out["errors"] != []:
+        raise Exception(out["errors"])
     return out
 
 
