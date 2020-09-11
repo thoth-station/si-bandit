@@ -77,3 +77,7 @@ all the things that you see...
 ## Release 0.1.3 (2020-07-28T15:29:54)
 * Move cli to be in toplevel dir (#22)
 * include aicoe-ci configuration file (#21)
+
+## Release 0.1.4 (2020-09-11T18:39:38)
+### Bug Fixes
+* raise error on failed bandit run (#26)
