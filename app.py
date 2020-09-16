@@ -31,6 +31,7 @@ from typing import Any
 from thoth.analyzer import run_command
 from thoth.analyzer import print_command_result
 from thoth.common import init_logging
+from thoth.python import Source
 
 from thoth.analyzer import __version__ as __analyzer__version__
 from thoth.common import __version__ as __common__version__
@@ -45,8 +46,6 @@ __component_version__ = (
 _LOGGER = logging.getLogger(si_bandit_title)
 _LOGGER.info("SI Bandit v%s", __component_version__)
 
-
-from thoth.python import Source
 
 init_logging()
 
