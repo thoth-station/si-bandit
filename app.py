@@ -36,14 +36,14 @@ from thoth.analyzer import __version__ as __analyzer__version__
 from thoth.common import __version__ as __common__version__
 from thoth.python import __version__ as __python__version__
 
-__service_version__ = (
+__component_version__ = (
     f"{si_bandit_version}+"
     f"analyzer.{__analyzer__version__}.common.{__common__version__}."
     f"python.{__python__version__}"
 )
 
 _LOGGER = logging.getLogger(si_bandit_title)
-_LOGGER.info("SI Bandit v%s", __service_version__)
+_LOGGER.info("SI Bandit v%s", __component_version__)
 
 
 from thoth.python import Source
