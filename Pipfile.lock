@@ -150,10 +150,10 @@
         },
         "google-auth": {
             "hashes": [
-                "sha256:bcbd9f970e7144fe933908aa286d7a12c44b7deb6d78a76871f0377a29d09789",
-                "sha256:f4d5093f13b1b1c0a434ab1dc851cd26a983f86a4d75c95239974e33ed406a87"
+                "sha256:7084c50c03f7a8a5696ef4500e65df0c525a0f6909f3c70b9ee65900a230c755",
+                "sha256:dcf86c5adc3a8a7659be190b12bb8912ae019cfd9ee2a571ea881e289fafbe39"
             ],
-            "version": "==1.21.1"
+            "version": "==1.21.2"
         },
         "idna": {
             "hashes": [
@@ -485,10 +485,10 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:97bff68e57402ad39674e6fe2545df0d5eea41c3d51e280c170761705c8c20ff",
-                "sha256:a16caf9ce892623081cbb9a95f6c1f892778bb123909b0ed7afdfb52ce7a58a1"
+                "sha256:1a086486ff9da15791f294f6e9915eb3747d161ef64dee2d038a4d0b4a369b24",
+                "sha256:45486deb031cea6bbb25a540d7adb4dd48cd8a1cc31e6a5ce9fb4f792a572e9a"
             ],
-            "version": "==0.17.4"
+            "version": "==0.17.6"
         },
         "six": {
             "hashes": [
@@ -521,11 +521,11 @@
         },
         "thoth-common": {
             "hashes": [
-                "sha256:24a146289ebdbb78a0b1af801d3bb4d4aa34f62e0188fce8a382a9b444b460c5",
-                "sha256:e1f139c3d99d4e5da47039e77640c14a439a754e1fc0e8a60009c16e58a84863"
+                "sha256:56113cd0cc49a23ca404bb5121ecf0e9876e4bf4d7cbbaa3cf553d9c8e64d0b7",
+                "sha256:714eeeb98e110798114185c82d37f62971885aee1778f09789f0ef5411a1ec1b"
             ],
             "index": "pypi",
-            "version": "==0.18.3"
+            "version": "==0.19.0"
         },
         "thoth-python": {
             "hashes": [
@@ -548,7 +548,7 @@
                 "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c",
                 "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"
             ],
-            "markers": "python_version < '3.8'",
+            "markers": "python_version < '3.7'",
             "version": "==3.7.4.3"
         },
         "tzlocal": {
