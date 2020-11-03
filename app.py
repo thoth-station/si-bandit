@@ -52,11 +52,14 @@ init_logging()
 
 def _run_bandit(from_directory: str) -> Optional[Dict[str, Any]]:
     results = run_command(f"bandit -r -f json {from_directory}", is_json=True, raise_on_error=False)
-    out = results.stdout
+    out = results.stdout  # type: dict
     if out is None:
-        raise Exception(results.stderr)
-    if out["errors"] != []:
-        raise Exception(out["errors"])
+        out = {"error_messages": [results.stderr], "error": True}
+    elif out["errors"] != []:
+        out["error_messages"] = out.pop("errors")
+        out["error"] = True
+
+    out["error"] = False
     return out
 
 
