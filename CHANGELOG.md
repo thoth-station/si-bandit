@@ -81,3 +81,19 @@ all the things that you see...
 ## Release 0.1.4 (2020-09-11T18:39:38)
 ### Bug Fixes
 * raise error on failed bandit run (#26)
+
+## Release 0.2.0 (2020-11-23T18:52:11)
+### Features
+* Make pre-commit happy (#37)
+* Add version logs
+### Bug Fixes
+* do not raise exception on failed bandit (#42)
+### Improvements
+* use __component_version__
+### Automatic Updates
+* :pushpin: Automatic update of dependency thoth-common from 0.20.0 to 0.20.4 (#44)
+* :pushpin: Automatic update of dependency thoth-python from 0.10.1 to 0.10.2 (#41)
+* :pushpin: Automatic update of dependency thoth-common from 0.19.0 to 0.20.0 (#40)
+* :pushpin: Automatic update of dependency thoth-common from 0.18.3 to 0.19.0 (#35)
+* :pushpin: Automatic update of dependency thoth-common from 0.18.2 to 0.18.3 (#32)
+* :pushpin: Automatic update of dependency thoth-python from 0.10.0 to 0.10.1 (#29)
